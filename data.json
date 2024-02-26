@@ -1,0 +1,44 @@
+[
+  {
+    "name": "test",
+    "email": "emai1l@mail.ru",
+    "createdAt": "2024-02-26T12:40:20.060Z",
+    "updatedAt": "2024-02-26T15:25:38.802Z"
+  },
+  {
+    "name": "test",
+    "email": "test@tes.iy",
+    "createdAt": "2024-02-26T12:40:25.947Z",
+    "updatedAt": null
+  },
+  {
+    "name": "test",
+    "email": "test@tes.iy",
+    "createdAt": "2024-02-26T12:40:26.295Z",
+    "updatedAt": null
+  },
+  {
+    "name": "test",
+    "email": "test@tes.iy",
+    "createdAt": "2024-02-26T12:40:26.644Z",
+    "updatedAt": null
+  },
+  {
+    "name": "test",
+    "email": "test@tes.iy",
+    "createdAt": "2024-02-26T12:40:27.001Z",
+    "updatedAt": null
+  },
+  {
+    "name": "testd",
+    "email": "email@mail.ru",
+    "createdAt": "2024-02-26T14:27:00.058Z",
+    "updatedAt": "2024-02-26T14:27:11.877Z"
+  },
+  {
+    "name": "testthtrd",
+    "email": "aghr@jy.hj",
+    "createdAt": "2024-02-26T15:25:24.546Z",
+    "updatedAt": null
+  }
+]

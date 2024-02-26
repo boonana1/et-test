@@ -1,0 +1,140 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ЭР-Телеком ТЗ</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 20px;
+        }
+
+        #saveForm,
+        #updateForm {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 1em;
+        }
+
+        .record-container {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            margin-bottom: 20px;
+        }
+
+        .record {
+            border: 1px solid #ddd;
+            padding: 10px;
+        }
+
+        @media (max-width: 768px) {
+            .record-container {
+                grid-template-columns: repeat(2, 1fr);
+            }
+        }
+    </style>
+</head>
+
+<body>
+
+    <h2>ЭР-Телеком ТЗ</h2>
+
+    <!-- Форма для сохранения данных -->
+    <h3>Добавление записи</h3>
+    <form id="saveForm">
+        <label for="name">Имя:</label>
+        <input type="text" id="name" name="name" required>
+        <label for="email">Почта:</label>
+        <input type="email" id="email" name="email" required>
+        <button type="button" class="saveButton">Добавить</button>
+    </form>
+
+    <!-- Форма для изменения почты -->
+    <h3>Обновление записи</h3>
+    <form id="updateForm">
+        <label for="updateName">Имя:</label>
+        <input type="text" id="updateName" name="updateName" required>
+        <label for="updateEmail">Новая почта:</label>
+        <input type="email" id="updateEmail" name="updateEmail" required>
+        <button type="button" class="updateButton">Обновить</button>
+    </form>
+
+    <!-- Таблица для отображения данных -->
+    <h3>Список</h3>
+    <div id="recordsContainer"></div>
+
+    <script>
+        // Функция для отправки запроса на сохранение записи
+        document.querySelector(".saveButton").addEventListener("click", () => {
+            const name = document.getElementById('name').value;
+            const email = document.getElementById('email').value;
+
+            fetch('http://localhost:7000/save', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({ name, email }),
+            })
+                .then(response => response.json())
+                .then(data => displayRecords(data));
+        });
+
+        // Функция для отправки запроса на изменение почты
+        document.querySelector(".updateButton").addEventListener("click", () => {
+            const name = document.getElementById('updateName').value;
+            const email = document.getElementById('updateEmail').value;
+
+            fetch(`http://localhost:7000/update/${name}`, {
+                method: 'PUT',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({ email }),
+            })
+                .then(response => response.json())
+                .then(data => displayRecords(data)).catch(e => { console.warn(e); });
+        });
+
+        // Функция для отображения записей в таблице
+        function displayRecords(records) {
+            const recordsContainer = document.getElementById('recordsContainer');
+            recordsContainer.innerHTML = '';
+
+            records.forEach(record => {
+                const recordDiv = document.createElement('div');
+                recordDiv.className = 'record-container';
+
+                const fieldName = document.createElement('div');
+                fieldName.className = 'record';
+                fieldName.innerHTML = `<strong>Имя:</strong> ${record["name"] || '-'}`;
+                recordDiv.appendChild(fieldName);
+                const fieldEmail = document.createElement('div');
+                fieldEmail.className = 'record';
+                fieldEmail.innerHTML = `<strong>Почта:</strong> ${record["email"] || '-'}`;
+                recordDiv.appendChild(fieldEmail);
+                const fieldCreated = document.createElement('div');
+                fieldCreated.className = 'record';
+                fieldCreated.innerHTML = `<strong>Добавлено:</strong> ${record["createdAt"] || '-'}`;
+                recordDiv.appendChild(fieldCreated);
+                const fieldUpdated = document.createElement('div');
+                fieldUpdated.className = 'record';
+                fieldUpdated.innerHTML = `<strong>Обновлено:</strong> ${record["updatedAt"] || '-'}`;
+                recordDiv.appendChild(fieldUpdated);
+
+                recordsContainer.appendChild(recordDiv);
+            });
+        }
+
+        // Загрузка и отображение записей при загрузке страницы
+        fetch('http://localhost:7000/records')
+            .then(response => response.json())
+            .then(data => displayRecords(data));
+    </script>
+
+</body>
+
+</html>
